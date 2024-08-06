@@ -5,7 +5,7 @@
   "type": "module",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+    "dev": "cross-env NODE_ENV=development nodemon -r dotenv/config --experimental-json-modules src/index.js",
     "build": "echo 'No build step is required'"
   },
   "keywords": [
@@ -15,6 +15,7 @@
   "author": "MjafarsadiqD",
   "license": "ISC",
   "devDependencies": {
+    "cross-env": "^7.0.3",
     "dotenv": "^16.4.5",
     "nodemon": "^3.1.4",
     "prettier": "^3.2.5"
