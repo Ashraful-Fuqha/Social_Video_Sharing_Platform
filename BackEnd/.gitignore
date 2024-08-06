@@ -1,4 +1,5 @@
 # Logs
+App.tsx
 .env
 http://localhost:5173/logs
 *.log
