@@ -1,5 +1,6 @@
 # Logs
-logs
+.env
+http://localhost:5173/logs
 *.log
 npm-debug.log*
 yarn-debug.log*
