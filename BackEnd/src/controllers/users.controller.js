@@ -5,6 +5,7 @@ import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/fileUpload.js";
 import { APIResponse } from "../utils/APIResponse.js";
 import jwt from "jsonwebtoken"
+import ms from "ms"
 import mongoose from "mongoose";
 
 const registerUser = asyncHandler( async (req,res) => {
@@ -131,16 +132,24 @@ const loginUser = asyncHandler(async(req, res) => {
 
     const loggerinuser = await User.findById(user._id).select("-password -refreshToken")
 
-    const options = {
+    const optionsAccessToken = {
         httpOnly : true,
         secure : true,
-        sameSite: 'None'
+        sameSite: 'None',
+        expires: new Date(Date.now() + ms(process.env.ACCESS_TOKEN_EXPIRY))
+    }
+
+    const optionsRefreshToken = {
+        httpOnly : true,
+        secure : true,
+        sameSite: 'None',
+        expires:  new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY))
     }
 
     return res
             .status(200)
-            .cookie("accessToken", accessToken, options)
-            .cookie("refreshToken",refreshToken, options)
+            .cookie("accessToken", accessToken, optionsAccessToken)
+            .cookie("refreshToken",refreshToken, optionsRefreshToken)
             .json(
                 new APIResponse(
                     200,
@@ -200,17 +209,26 @@ const refreshAccesstoken = asyncHandler(async(req, res) => {
             throw new ApiError(401, "Refresh token is expired or user")
         }
 
-        const options = {
-            httpOnly: true,
-            secure: true
+        const optionsAccessToken = {
+            httpOnly : true,
+            secure : true,
+            sameSite: 'None',
+            expires: new Date(Date.now() + ms(process.env.ACCESS_TOKEN_EXPIRY))
+        }
+
+        const optionsRefreshToken = {
+            httpOnly : true,
+            secure : true,
+            sameSite: 'None',
+            expires:  new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY))
         }
     
         const {accessToken, newRefreshToken} = await generateAccessTokenandRefreshToken(user._id)
     
         return res
         .status(200)
-        .cookie("accessToken", accessToken, options)
-        .cookie("refreshToken", newRefreshToken, options)
+        .cookie("accessToken", accessToken, optionsAccessToken)
+        .cookie("refreshToken", newRefreshToken, optionsRefreshToken)
         .json(
             new APIResponse(
                 200, 

@@ -5,6 +5,8 @@ import { logout } from '../Slices/authSlice';
 
 const baseQuery = fetchBaseQuery({ 
     baseUrl: 'https://social-video-sharing-platform.onrender.com/api/v1/',
+    // CHANGE THIS BASE URL TO ABOVE RENDER URL WHILE PUSHING THE CODE
+    // baseUrl: 'http://localhost:3000/api/v1/',
     //Whenever a new request is made through this url, the tokens are automatically attached to them for further validation
     //we are directly attaching the tokens from backend with http-only cookies we are'nt storing them anywhere not in localstorage,sessionstorage, in-memory, server
     credentials: 'include',
