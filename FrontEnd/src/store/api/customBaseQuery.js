@@ -14,18 +14,18 @@ const baseQuery = fetchBaseQuery({
 
 const baseQueryWithReauth = async (args, api, extraOptions) => {
     let result = await baseQuery(args, api, extraOptions);
-
-    if (result.error && result.error.status === 401) {
+    // console.log(result);
+    if (result.error && result.error.originalStatus === 401) {
         // Handle re-authentication logic here
         const refreshResult = await baseQuery({
-            url: '/users/refresh-token',
+            url: 'users/refresh-token',
             method: 'POST',
         }, api, extraOptions);
 
         if (refreshResult.data) {
             // Retry the original query with the new token
             result = await baseQuery(args, api, extraOptions);
-            console.log(result);
+            // console.log(result);
             
         } else {
             api.dispatch(logout());

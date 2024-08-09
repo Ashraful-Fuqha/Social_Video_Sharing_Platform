@@ -223,12 +223,12 @@ const refreshAccesstoken = asyncHandler(async(req, res) => {
             expires:  new Date(Date.now() + ms(process.env.REFRESH_TOKEN_EXPIRY))
         }
     
-        const {accessToken, newRefreshToken} = await generateAccessTokenandRefreshToken(user._id)
+        const {accessToken, refreshToken} = await generateAccessTokenandRefreshToken(user._id)
     
         return res
         .status(200)
         .cookie("accessToken", accessToken, optionsAccessToken)
-        .cookie("refreshToken", newRefreshToken, optionsRefreshToken)
+        .cookie("refreshToken", refreshToken, optionsRefreshToken)
         .json(
             new APIResponse(
                 200, 
